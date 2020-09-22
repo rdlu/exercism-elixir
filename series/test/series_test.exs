@@ -17,17 +17,12 @@ defmodule StringSeriesTest do
   end
 
   # @tag :pending
-  test "slices of size 4" do
-    assert StringSeries.slices("01234", 4) == ["0123", "1234"]
-  end
-
-  # @tag :pending
   test "slices same size as string" do
     assert StringSeries.slices("01234", 5) == ["01234"]
   end
 
   # @tag :pending
-  test "Unicode characters count as a single character" do
+  test "slices using text instead digits" do
     assert StringSeries.slices("José", 1) == ["J", "o", "s", "é"]
     assert StringSeries.slices("José", 2) == ["Jo", "os", "sé"]
   end
