@@ -29,17 +29,25 @@ defmodule Change do
     end
   end
 
+  @doc """
+  Finds a list from combinations of `coins` where its `target` value matches the `sum` of the candidate list.
+  """
   @spec find_combinations_sum(list, integer, integer) :: list | nil
   def find_combinations_sum(coins, chunk_size, target) do
-    Enum.find(combination_with_repetition(coins, chunk_size),
+    Enum.find(combinations_with_repetition(coins, chunk_size),
       fn candidate -> Enum.sum(candidate) == target end)
   end
 
 
-  @spec combination_with_repetition(list, integer) :: list
-  def combination_with_repetition(_, 0), do: [[]]
-  def combination_with_repetition([], _), do: []
-  def combination_with_repetition([h|t]=s, n) do
-    (for l <- combination_with_repetition(s, n-1), do: [h|l]) ++ combination_with_repetition(t, n)
+  @doc """
+  Generates combinations of `n` size with repetitions (combinatorial analytics) for a list `s`
+
+  From: https://rosettacode.org/wiki/Combinations_with_repetitions#Elixir
+  """
+  @spec combinations_with_repetition(list, integer) :: list
+  def combinations_with_repetition(_, 0), do: [[]]
+  def combinations_with_repetition([], _), do: []
+  def combinations_with_repetition([h|t]=s, n) do
+    (for l <- combinations_with_repetition(s, n-1), do: [h|l]) ++ combinations_with_repetition(t, n)
   end
 end
