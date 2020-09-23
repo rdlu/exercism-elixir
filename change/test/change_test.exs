@@ -67,4 +67,10 @@ defmodule ChangeTest do
     coins = [1, 2, 5]
     assert Change.generate(coins, -5) == {:error, "cannot change"}
   end
+
+  test "optimal coins not using the biggest one first" do
+    coins = [1, 2, 10, 15]
+    expected = [10, 10]
+    assert Change.generate(coins, 20) == {:ok, expected }
+  end
 end
