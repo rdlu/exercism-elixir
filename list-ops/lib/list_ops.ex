@@ -7,13 +7,13 @@ defmodule ListOps do
 
   @spec count(list) :: non_neg_integer
   def count(l) do
-    reduce(l, 0, fn _dont_care, acc -> acc + 1 end)
+    foldl(l, 0, fn _dont_care, acc -> acc + 1 end)
   end
 
   @spec reverse(list) :: list
   def reverse([]), do: []
   def reverse(l) do
-    reduce(l, [], fn current_list,new_list -> [current_list|new_list] end)
+    foldl(l, [], fn current_list,new_list -> [current_list|new_list] end)
   end
 
   @spec map(list, (any -> any)) :: list
@@ -24,15 +24,19 @@ defmodule ListOps do
 
   @spec filter(list, (any -> as_boolean(term))) :: list
   def filter(l, f) do
-    reverse(l) |> reduce([], fn cur,new -> if f.(cur), do: [cur | new], else: new end)
+    reverse(l) |> foldl([], fn cur,new -> if f.(cur), do: [cur | new], else: new end)
   end
 
   @type acc :: any
-  @spec reduce(list, acc, (any, acc -> acc)) :: acc
-  def reduce([], acc, _), do: acc
-  def reduce([h | t], acc, f) do
-    reduce(t, f.(h, acc), f)
+  @spec foldl(list, acc, (any, acc -> acc)) :: acc
+  def foldl([], acc, _), do: acc
+  def foldl([h | t], acc, f) do
+    foldl(t, f.(h, acc), f)
   end
+
+  @spec foldr(list, any, any) :: any
+  def foldr([], acc, _), do: acc
+  def foldr([h | t], acc, f), do: f.(h, foldr(t, acc, f))
 
   @spec append(list, list) :: list
   def append(l, []), do: l
