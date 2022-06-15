@@ -12,8 +12,8 @@ defmodule Sublist do
     end
   end
 
-  def sublist?([],_), do: true
-  def sublist?(sublist,full_list) do
+  defp sublist?([],_), do: true
+  defp sublist?(sublist,full_list) do
       #First idea: sublist === Enum.take(full_list, length(sublist)) or sublist?(sublist,tl(full_list))
       #But it timeouts, Stream.chunk seems more lazy!
       Stream.chunk_every(full_list, length(sublist), 1, :discard)
