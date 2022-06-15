@@ -1,23 +1,33 @@
+# Credits to jaimeiniesta, TIL `in` for maps
 defmodule LogLevel do
+  @labels %{
+    0 => :trace,
+    1 => :debug,
+    2 => :info,
+    3 => :warning,
+    4 => :error,
+    5 => :fatal
+  }
+
+  @all_codes 0..5
+  @legacy_codes 1..4
+
   def to_label(level, legacy?) do
-    case { level, legacy? } do
-      {0, false} -> :trace
-      {1, _} -> :debug
-      {2, _} -> :info
-      {3, _} -> :warning
-      {4, _} -> :error
-      {5, false} -> :fatal
-      _ -> :unknown
+    cond do
+      legacy? and level in @legacy_codes -> @labels[level]
+      not legacy? and level in @all_codes -> @labels[level]
+      true -> :unknown
     end
   end
 
   def alert_recipient(level, legacy?) do
-    case {to_label(level, legacy?), legacy?} do
-      {:error, _} -> :ops
-      {:fatal, _} -> :ops
-      {:unknown, true} -> :dev1
-      {:unknown, false} -> :dev2
-      _ -> false
+    label = to_label(level, legacy?)
+
+    cond do
+      label in [:error, :fatal] -> :ops
+      label == :unknown and legacy? -> :dev1
+      label == :unknown and !legacy? -> :dev2
+      true -> false
     end
   end
 end
