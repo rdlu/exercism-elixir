@@ -12,8 +12,10 @@ defmodule KitchenCalculator do
 
   def from_milliliter({:milliliter, volume}, unit), do: {unit, volume / @ratios[unit]}
 
-  def convert({from_unit, volume}, to_unit) do
-    to_milliliter({from_unit, volume})
+  @spec convert({atom, number}, atom) :: {atom, float}
+  def convert(volume_pair, to_unit) do
+    volume_pair
+    |> to_milliliter
     |> from_milliliter(to_unit)
   end
 end
