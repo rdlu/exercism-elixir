@@ -1,8 +1,8 @@
 defmodule LanguageList do
   def new(), do: []
   def add(list, language), do: [language | list]
-  def remove([_ | tail]), do: tail
-  def first([head | _]), do: head
+  def remove([_to_remove | languages]), do: languages
+  def first([language | _]), do: language
   defdelegate count(list), to: Enum, as: :count
 
   @spec functional_list?(Enum) :: boolean
