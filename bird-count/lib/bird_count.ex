@@ -7,9 +7,12 @@ defmodule BirdCount do
 
   def has_day_without_birds?(list \\ []), do: 0 in list
 
-  def total(list \\ []), do: Enum.sum(list)
-  # Using delegate example
-  # defdelegate total(list), to: Enum, as: :sum
+  def total([]), do: 0
+  def total([h | t]) do
+    h + total(t)
+  end
 
-  def busy_days(list \\ []), do: Enum.count(list, &(&1 >= 5))
+  def busy_days([]), do: 0
+  def busy_days([h | t]) when h >= 5, do: 1 + busy_days(t)
+  def busy_days([h | t]) when h < 5, do: 0 + busy_days(t)
 end
