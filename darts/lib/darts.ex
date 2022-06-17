@@ -7,10 +7,11 @@ defmodule Darts do
   """
   @spec score(position) :: integer
   def score({x, y}) do
+    distance = distance_from_center(x, y)
     cond do
-      distance_from_center(x, y) <= 1 -> 10
-      distance_from_center(x, y) <= 5 -> 5
-      distance_from_center(x, y) <= 10 -> 1
+      distance <= 1 -> 10
+      distance <= 5 -> 5
+      distance <= 10 -> 1
       true -> 0
     end
   end
