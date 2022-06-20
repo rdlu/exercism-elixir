@@ -1,4 +1,6 @@
 defmodule CollatzConjecture do
+  defguardp positive_even?(i) when rem(i, 2) == 0 and i > 0
+  defguardp positive_odd?(i) when rem(i, 2) != 0 and i > 0
   @doc """
   calc/1 takes an integer and returns the number of steps required to get the
   number to 1 when following the rules:
@@ -7,6 +9,6 @@ defmodule CollatzConjecture do
   """
   @spec calc(i :: pos_integer()) :: non_neg_integer()
   def calc(1), do: 0
-  def calc(i) when rem(i, 2) == 0 and i > 0, do: 1 + calc(div(i, 2))
-  def calc(i) when rem(i, 2) != 0 and i > 0, do: 1 + calc(i * 3 + 1)
+  def calc(i) when positive_even?(i), do: 1 + calc(div(i, 2))
+  def calc(i) when positive_odd?(i), do: 1 + calc(i * 3 + 1)
 end
