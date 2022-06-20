@@ -6,6 +6,11 @@ defmodule NameBadge do
   defp id(nil), do: ""
   defp id(id), do: "[#{id}] - "
 
-  defp depart(nil), do: "OWNER"
-  defp depart(s), do: s |> String.upcase()
+  defp depart(s) do
+    if s do
+      s |> String.upcase()
+    else
+      "OWNER"
+    end
+  end
 end
