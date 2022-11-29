@@ -4,27 +4,21 @@ defmodule DNA do
   @type dna_charlist :: [nucleotide_char()]
   @type dna_bitstring :: <<_::_*4>>
 
+  @encode_map %{
+    ?\s => 0b0000,
+    ?A => 0b0001,
+    ?C => 0b0010,
+    ?G => 0b0100,
+    ?T => 0b1000
+  }
+
+  @decode_map Enum.into(@encode_map, %{}, fn {k, v} -> {v, k} end)
+
   @spec encode_nucleotide(nucleotide_char()) :: nucleotide_bitstring()
-  def encode_nucleotide(code_point) do
-    case code_point do
-      ?\s -> 0b0000
-      ?A -> 0b0001
-      ?C -> 0b0010
-      ?G -> 0b0100
-      ?T -> 0b1000
-    end
-  end
+  def encode_nucleotide(nuc), do: Map.fetch!(@encode_map, nuc)
 
   @spec decode_nucleotide(nucleotide_bitstring()) :: nucleotide_char()
-  def decode_nucleotide(encoded_code) do
-    case encoded_code do
-      0b0000 -> ?\s
-      0b0001 -> ?A
-      0b0010 -> ?C
-      0b0100 -> ?G
-      0b1000 -> ?T
-    end
-  end
+  def decode_nucleotide(nuc), do: Map.fetch!(@decode_map, nuc)
 
   @spec encode(dna_charlist()) :: dna_bitstring()
   def encode([]), do: <<>>
