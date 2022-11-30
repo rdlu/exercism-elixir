@@ -6,9 +6,10 @@ defmodule Strain do
   Do not use `Enum.filter`.
   """
   @spec keep(list :: list(any), fun :: (any -> boolean)) :: list(any)
-  def keep(list, fun) do
-    for item <- list, fun.(item), do: item
-  end
+  def keep([], _), do: []
+
+  def keep([head | tail], fun),
+    do: if(fun.(head), do: [head | keep(tail, fun)], else: keep(tail, fun))
 
   @doc """
   Given a `list` of items and a function `fun`, return the list of items where
@@ -17,7 +18,8 @@ defmodule Strain do
   Do not use `Enum.reject`.
   """
   @spec discard(list :: list(any), fun :: (any -> boolean)) :: list(any)
-  def discard(list, fun) do
-    for item <- list, !fun.(item), do: item
-  end
+  def discard([], _), do: []
+
+  def discard([head | tail], fun),
+    do: if(fun.(head), do: discard(tail, fun), else: [head | discard(tail, fun)])
 end
