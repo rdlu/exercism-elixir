@@ -1,18 +1,19 @@
 defmodule BasketballWebsite do
+  @spec extract_from_path(nil | maybe_improper_list | map, bitstring()) :: any
   def extract_from_path(data, path) when is_bitstring(path) do
     if String.contains?(path, ".") do
-      extract_from_path(data, String.split(path, "."))
+      do_extract_from_path(data, String.split(path, "."))
     else
       data[path]
     end
   end
 
-  def extract_from_path(data, [head | tail]) when tail == [] do
+  defp do_extract_from_path(data, [head | tail]) when tail == [] do
     data[head]
   end
 
-  def extract_from_path(data, [head | tail]) do
-    extract_from_path(data[head], tail)
+  defp do_extract_from_path(data, [head | tail]) do
+    do_extract_from_path(data[head], tail)
   end
 
   def get_in_path(data, path) do
