@@ -3,18 +3,18 @@ defmodule RemoteControlCar do
   defstruct nickname: "none", battery_percentage: 100, distance_driven_in_meters: 0
 
   def new(nickname \\ "none") do
-    %RemoteControlCar{nickname: nickname}
+    %__MODULE__{nickname: nickname}
   end
 
-  def display_distance(%RemoteControlCar{distance_driven_in_meters: distance}) do
+  def display_distance(%__MODULE__{distance_driven_in_meters: distance}) do
     "#{distance} meters"
   end
 
-  def display_battery(%RemoteControlCar{battery_percentage: 0}) do
+  def display_battery(%__MODULE__{battery_percentage: 0}) do
     "Battery empty"
   end
 
-  def display_battery(%RemoteControlCar{battery_percentage: bat}) do
+  def display_battery(%__MODULE__{battery_percentage: bat}) do
     "Battery at #{bat}%"
   end
 
@@ -23,8 +23,7 @@ defmodule RemoteControlCar do
   end
 
   def drive(
-        %RemoteControlCar{battery_percentage: bat, distance_driven_in_meters: distance} =
-          remote_car
+        %__MODULE__{battery_percentage: bat, distance_driven_in_meters: distance} = remote_car
       ) do
     %{
       remote_car
